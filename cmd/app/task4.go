@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
 	"os/signal"
 	"sync"
@@ -10,16 +9,12 @@ import (
 	"time"
 )
 
-func main() {
-	task4(5)	
-}
-
-func task4(workersCount int) {
+func task4(N int) {
 	ch := make(chan string)
 	endCh := make(chan os.Signal, 1)
 	signal.Notify(endCh, syscall.SIGINT)
 	var wg sync.WaitGroup
-	for i := 0; i < workersCount; i++ {
+	for i := 0; i < N; i++ {
 		i := i
 		wg.Add(1)
 		go func() {
@@ -39,7 +34,6 @@ func task4(workersCount int) {
 			break loop
 		default:
 			word := generateRandomWord()
-			fmt.Println(word)
 			ch <- word
 		}
 	}
@@ -47,15 +41,4 @@ func task4(workersCount int) {
 	close(ch)
 
 	wg.Wait()
-}
-
-
-
-func generateRandomWord() string {
-    letters := "abcdefghijklmnopqrstuvwxyz"
-    word := make([]byte, 5)
-    for i := range word {
-        word[i] = letters[rand.Intn(len(letters))]
-    }
-    return string(word)
 }
