@@ -1,13 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"unicode/utf8"
+)
 
-func someFunc() *string {
+func someFunc() (string, error) {
 	v := createHugeString(1024) //100
-	if len(*v) < 100 {
-		return nil
+	if utf8.RuneCountInString(*v) < 100 {
+		return "", errors.New("too short")
 	}
-	return v
+	return (*v)[:100], nil
 }
 
 func createHugeString (size int) *string {
@@ -16,7 +20,10 @@ func createHugeString (size int) *string {
 }
 
 func task15() {
-	var justString *string
-	justString = someFunc()
-	fmt.Println(*justString)
+	justString, err := someFunc()
+	if err!= nil {
+        fmt.Println(err)
+		return
+    }
+	fmt.Println(justString)
 }
