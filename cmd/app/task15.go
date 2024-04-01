@@ -9,8 +9,8 @@ import (
 func someFunc() (string, error) {
 	v := createHugeString(1024) //100
 	size := utf8.RuneCountInString(*v)
-	if size < 100 {
-		return "", errors.New("too short")
+	if size != 100 {
+		return "", errors.New("length not 100")
 	}
 	arr1 := (*v)[:100]
 	runes := make([]rune, size)
