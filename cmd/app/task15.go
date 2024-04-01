@@ -8,10 +8,14 @@ import (
 
 func someFunc() (string, error) {
 	v := createHugeString(1024) //100
-	if utf8.RuneCountInString(*v) < 100 {
+	size := utf8.RuneCountInString(*v)
+	if size < 100 {
 		return "", errors.New("too short")
 	}
-	return (*v)[:100], nil
+	arr1 := (*v)[:100]
+	runes := make([]rune, size)
+	copy(runes, []rune(arr1)) 
+	return string(runes), nil
 }
 
 func createHugeString (size int) *string {
